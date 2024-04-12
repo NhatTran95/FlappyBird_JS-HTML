@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FlappyBird</title>
+</head>
+
+<body>
+    <canvas id="canvas" style="border: 1px solid red;"></canvas>
+    <script>
+        let canvas = document.getElementById("canvas");
+        let context = canvas.getContext("2d");
+        canvas.height = 500;
+        canvas.width = 1000;
+
+        let between = 150;
+        let outUp = 200;
+        let isPause = false;
+        let score = 0;
+        let speed = 5;
+        let playAgain = false;
+        let isStart = false;
+        let highScore = 0;
+
+        let scoreLocalStorage = localStorage.getItem('highScore');
+        if (scoreLocalStorage) {
+            highScore = Number(scoreLocalStorage)
+        }
+
+        let background = new Image();
+        background.src = "bg.jpg";
+
+        let bird = new Image();
+        bird.src = "bird3_copy.png";
+
+        let chimneyUp = new Image();
+        chimneyUp.src = "chimneyUp.png"
+        chimneyUp.width = 50;
+        chimneyUp.height = 200;
+
+        let chimneyDown = new Image();
+        chimneyDown.src = "chimneyDown.png"
+        chimneyDown.width = 50;
+        chimneyDown.height = 200;
+
+        let gameOver = new Image();
+        gameOver.src = 'gameover.png'
+
+        let gameStart = new Image();
+        gameStart.src = 'gamestart.png'
+
+        let birdObj = {
+            x: canvas.width / 4,
+            y: canvas.height / 2
+        }
+
+        let chimneies = [];
+        chimneies.push({
+            x: canvas.width - 50,
+            y: 0 - outUp
+        })
+
+        function run() {
+            context.drawImage(background, 0, 0, canvas.width, canvas.height);
+
+            context.drawImage(bird, birdObj.x, birdObj.y, 40, 40);
+
+            context.font = '30px Arial';
+            context.fillStyle = 'blue'
+            context.fillText(`Score: ${score}`, 50, 50);
+
+            context.fillText(`High Score: ${highScore}`, 250, 50)
+
+            if (!isStart) {
+                context.drawImage(gameStart, canvas.width / 4, canvas.height / 3)
+            }
+
+            for (let i = 0; i < chimneies.length; i++) {
+
+                let currentChimney = chimneies[i];
+
+                context.drawImage(chimneyUp, currentChimney.x, currentChimney.y)
+
+                context.drawImage(chimneyDown, currentChimney.x, currentChimney.y + outUp + chimneyUp.height + between)
+
+                if (isStart) {
+                    if (score >= 15) {
+                        currentChimney.x -= speed * 2;
+                    } else {
+                        currentChimney.x -= speed;
+                    }
+
+                };
+
+                if (currentChimney.x === canvas.width / 2) {
+                    if (score >= 5) {
+                        between = 130;
+                        bird.src = 'bird2_copy.png'
+                        chimneyUp.src = 'chimneyUp_2.png'
+                        chimneyDown.src = 'chimneyDown_2.png'
+                    }
+
+                    if (score >= 10) {
+                        between = 120;
+                        bird.src = 'bird_copy.png'
+                        chimneyUp.src = 'chimneyUp_3.png'
+                        chimneyDown.src = 'chimneyDown_3.png'
+                    }
+
+                    if (score >= 15) {
+                        between = 150;         
+                    }
+
+                    chimneies.push({
+                        x: canvas.width - 50,
+                        y: -Math.round(Math.random() * (chimneyUp.height)) - outUp / 2
+                    })
+                }
+
+                if (currentChimney.x == birdObj.x) {
+                    score++;
+                    const sound = new Audio('getpoint.wav');
+                    sound.play()
+                }
+
+                if (currentChimney.x < -500) {
+                    chimneies.splice(0, 1)
+                }
+
+                if (birdObj.y <= 0 || birdObj.y >= canvas.height
+                    || ((birdObj.x + bird.width) > currentChimney.x && birdObj.x < (currentChimney.x + chimneyUp.width)
+                        && ((birdObj.y) < currentChimney.y + outUp + chimneyUp.height
+                            || (birdObj.y + bird.height) > currentChimney.y + outUp + chimneyUp.height + between
+                        ))) {
+                    context.drawImage(gameOver, canvas.width / 2.5, canvas.height / 3, 200, 200);
+                    playAgain = true;
+                    const sound = new Audio('fall.wav');
+                    sound.play()
+                    
+                    if(score > highScore) {
+                        localStorage.removeItem('highScore');
+                        localStorage.setItem('highScore', score.toString())
+                    }
+                    
+                    return;
+                }
+            }
+
+            if (isStart) {
+                birdObj.y += 3
+            }
+
+            if (!isPause) {
+                requestAnimationFrame(run)
+            }
+
+
+        }
+
+        document.addEventListener('keydown', function (e) {
+            if (e.key == ' ') {
+                if (!isStart) {
+                    isStart = true
+                }
+                if (playAgain) {
+                    location.reload();
+                    playAgain = false;
+                }
+                birdObj.y -= 60;
+                const sound = new Audio('fap.wav');
+                sound.play()
+            }
+        })
+
+        document.addEventListener('keydown', function (e) {
+            if (!isPause) {
+                if (e.key == 'Enter') {
+                    isPause = true;
+                }
+            } else {
+                if (e.key == 'Enter') {
+                    isPause = false;
+                    run()
+                }
+            }
+
+        })
+
+        run()
+
+    </script>
+</body>
+
+</html>
