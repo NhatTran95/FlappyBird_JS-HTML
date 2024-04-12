@@ -97,12 +97,10 @@
                 if (currentChimney.x === canvas.width / 2) {
                     if (score >= 5) {
                         between = 130;
-                        bird.src = 'bird2_copy.png'
                     }
 
                     if (score >= 10) {
                         between = 120;
-                        bird.src = 'bird_copy.png'
                     }
 
                     if (score >= 15) {
@@ -156,6 +154,21 @@
         }
 
         document.addEventListener('keydown', function (e) {
+            if (e.key == '2') {
+                bird.src = 'bird2_copy.png'
+                chimneyUp.src = 'chimneyUp_3.png'
+                chimneyDown.src = 'chimneyDown_3.png'
+            }
+            if (e.key == '3') {
+                bird.src = 'bird3_copy.png'
+                chimneyUp.src = 'chimneyUp_2.png'
+                chimneyDown.src = 'chimneyDown_2.png'
+            }
+            if (e.key == '1') {
+                bird.src = 'bird_copy.png'
+                chimneyUp.src = 'chimneyUp.png'
+                chimneyDown.src = 'chimneyDown.png'
+            }
             if (e.key == ' ') {
                 if (!isStart) {
                     isStart = true
