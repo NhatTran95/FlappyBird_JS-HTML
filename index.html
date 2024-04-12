@@ -98,19 +98,19 @@
                     if (score >= 5) {
                         between = 130;
                         bird.src = 'bird2_copy.png'
-                        // chimneyUp.src = 'chimneyUp_2.png'
-                        // chimneyDown.src = 'chimneyDown_2.png'
+                        chimneyUp.src = 'chimneyUp_2.png'
+                        chimneyDown.src = 'chimneyDown_2.png'
                     }
 
                     if (score >= 10) {
                         between = 120;
                         bird.src = 'bird_copy.png'
-                        // chimneyUp.src = 'chimneyUp_3.png'
-                        // chimneyDown.src = 'chimneyDown_3.png'
+                        chimneyUp.src = 'chimneyUp_3.png'
+                        chimneyDown.src = 'chimneyDown_3.png'
                     }
 
                     if (score >= 15) {
-                        between = 150;         
+                        between = 150;
                     }
 
                     chimneies.push({
@@ -138,12 +138,12 @@
                     playAgain = true;
                     const sound = new Audio('fall.wav');
                     sound.play()
-                    
-                    if(score > highScore) {
+
+                    if (score > highScore) {
                         localStorage.removeItem('highScore');
                         localStorage.setItem('highScore', score.toString())
                     }
-                    
+
                     return;
                 }
             }
