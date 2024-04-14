@@ -33,7 +33,7 @@
         background.src = "bg.jpg";
 
         let bird = new Image();
-        bird.src = "bird3_copy.png";
+        bird.src = "bird.png";
 
         let chimneyUp = new Image();
         chimneyUp.src = "chimneyUp.png"
@@ -67,7 +67,7 @@
 
             context.drawImage(bird, birdObj.x, birdObj.y, 40, 40);
 
-            context.font = '30px Arial';
+            context.font = '25px Arial';
             context.fillStyle = 'blue'
             context.fillText(`Score: ${score}`, 50, 50);
 
@@ -155,19 +155,22 @@
 
         document.addEventListener('keydown', function (e) {
             if (e.key == '2') {
-                bird.src = 'bird2_copy.png'
-                chimneyUp.src = 'chimneyUp_3.png'
-                chimneyDown.src = 'chimneyDown_3.png'
-            }
-            if (e.key == '3') {
-                bird.src = 'bird3_copy.png'
+                bird.src = 'bird2.png'
                 chimneyUp.src = 'chimneyUp_2.png'
                 chimneyDown.src = 'chimneyDown_2.png'
+                background.src = 'bg_blue.jpg'
+            }
+            if (e.key == '3') {
+                bird.src = 'bird3.png'
+                chimneyUp.src = 'chimneyUp_3.png'
+                chimneyDown.src = 'chimneyDown_3.png'
+                background.src = 'bg_yellow.jpg'
             }
             if (e.key == '1') {
-                bird.src = 'bird_copy.png'
+                bird.src = 'bird.png'
                 chimneyUp.src = 'chimneyUp.png'
                 chimneyDown.src = 'chimneyDown.png'
+                background.src = "bg.jpg";
             }
             if (e.key == ' ') {
                 if (!isStart) {
